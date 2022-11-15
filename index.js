@@ -67,3 +67,11 @@ function newDecimalToHex(updatedDecimalArray){
     console.log("Encrypted Hex Array:",updatedHexArray);
 }
 newDecimalToHex(updatedDecimalArray);
+
+
+function hex_to_ascii(updatedHexArray){
+    outHex = updatedHexArray.join("");
+    outString = unescape(outHex.replace(/\\/g, "%"));
+    console.log("String Output:",outString);
+}
+hex_to_ascii(updatedHexArray)
