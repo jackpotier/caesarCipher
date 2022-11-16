@@ -27,16 +27,23 @@ function caesar(inString,shift){
     function decimalShift(unicodeDecimalArray) {
         updatedDecimalArray = []
         for (let i=0; i < unicodeDecimalArray.length; i++){
+            //For capital letter wrapping
             if (unicodeDecimalArray[i]+shift>90 && unicodeDecimalArray[i]<=90 && unicodeDecimalArray[i]>=65){
                 var wrapValue = 90-unicodeDecimalArray[i];
                 updatedDecimalArray[i] = 65 + shift - wrapValue -1;
             }
-            if (unicodeDecimalArray[i]+shift>122 && unicodeDecimalArray[i]<=122 && unicodeDecimalArray[i]>=97){
+            //For lowercase letter wrapping
+            else if (unicodeDecimalArray[i]+shift>122 && unicodeDecimalArray[i]<=122 && unicodeDecimalArray[i]>=97){
                 var wrapValue = 122-unicodeDecimalArray[i];
                 updatedDecimalArray[i] = 97 + shift - wrapValue -1;
             }
-            if ((unicodeDecimalArray[i]+shift<=90 && unicodeDecimalArray[i]>=65) || (unicodeDecimalArray[i]+shift<=122 && unicodeDecimalArray[i]>=97)){
+            //For capital and lowercase encryption without wrapping
+            else if ((unicodeDecimalArray[i]+shift<=90 && unicodeDecimalArray[i]>=65) || (unicodeDecimalArray[i]+shift<=122 && unicodeDecimalArray[i]>=97)){
                 updatedDecimalArray[i] = unicodeDecimalArray[i] + shift;
+            }
+            //For spaces & punctuation
+            else {
+                updatedDecimalArray[i] = unicodeDecimalArray[i];
             }
         }
         console.log("Encrypted Decimal Array:",updatedDecimalArray);
@@ -44,20 +51,13 @@ function caesar(inString,shift){
 
     function newDecimalToHex(updatedDecimalArray){
         updatedHexArray = [];
-        counter3 = 0;
-            while (counter3 < updatedDecimalArray.length){
-                if ((updatedDecimalArray[counter3] >=65 && updatedDecimalArray[counter3] <=(90+shift)) || (updatedDecimalArray[counter3] >=97 && updatedDecimalArray[counter3] <=200)){
-                    updatedHexArray[counter3] = updatedDecimalArray[counter3].toString(16);
-                    while (updatedHexArray[counter3].length < 4) {
-                        updatedHexArray[counter3] = '0' + updatedHexArray[counter3];
-                    }
-                    updatedHexArray[counter3] = "\\u" + updatedHexArray[counter3];
+        for (let i =0; i <updatedDecimalArray.length; i++){
+            updatedHexArray[i] = updatedDecimalArray[i].toString(16);
+                while (updatedHexArray[i].length < 4) {
+                    updatedHexArray[i] = '0' + updatedHexArray[i];
                 }
-                else {
-                    updatedHexArray[counter3] = updatedDecimalArray[counter3]
-                }
-                counter3+=1
-                }
+                updatedHexArray[i] = "\\u" + updatedHexArray[i];
+            }
         console.log("Encrypted Hex Array:",updatedHexArray);
     }
     
@@ -76,4 +76,4 @@ function caesar(inString,shift){
 }
 
 
-caesar('Jack Potier', 5)
+caesar('ABCD efgh', 1)
