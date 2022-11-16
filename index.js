@@ -35,7 +35,11 @@ function caesar(inString,shift){
                 var wrapValue = 122-unicodeDecimalArray[i];
                 updatedDecimalArray[i] = 97 + shift - wrapValue -1;
             }
+            if ((unicodeDecimalArray[i]+shift<=90 && unicodeDecimalArray[i]>=65) || (unicodeDecimalArray[i]+shift<=122 && unicodeDecimalArray[i]>=97)){
+                updatedDecimalArray[i] = unicodeDecimalArray[i] + shift;
+            }
         }
+        console.log("Encrypted Decimal Array:",updatedDecimalArray);
     }
 
     function newDecimalToHex(updatedDecimalArray){
@@ -72,4 +76,4 @@ function caesar(inString,shift){
 }
 
 
-caesar('X', 5)
+caesar('Abcdefghijklmnopqrstuvwxyz', 5)
