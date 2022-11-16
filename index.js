@@ -1,6 +1,8 @@
 function caesar(inString,shift){
+
+    //Converting the characters in the input into their unicode hex values
     function toUnicodeHex(inString) {
-        console.log("String Input:",inString);
+        console.log("Input:",inString);
         unicodeHexArray = []
         for (var i=0; i < inString.length; i++) {
           var theUnicode = inString.charCodeAt(i).toString(16).toUpperCase();
@@ -12,7 +14,8 @@ function caesar(inString,shift){
         console.log("Hex Array:",unicodeHexArray);
     }
     
-    
+
+    //Converting the unicode hex values into decimal to do operations on
     function hexToDecimal(unicodeHexArray) {
         unicodeDecimalArray = [];
         counter=0;
@@ -20,35 +23,65 @@ function caesar(inString,shift){
             unicodeDecimalArray.push(parseInt(unicodeHexArray[counter],16));
             counter+=1
         }
-        console.log("Decimal array:",unicodeDecimalArray);
+        console.log("Decimal Array:",unicodeDecimalArray);
     }
     
     
+    //Encrypting the decimal unicode values of the original input
     function decimalShift(unicodeDecimalArray) {
         updatedDecimalArray = []
-        for (let i=0; i < unicodeDecimalArray.length; i++){
-            //For capital letter wrapping
-            if (unicodeDecimalArray[i]+shift>90 && unicodeDecimalArray[i]<=90 && unicodeDecimalArray[i]>=65){
-                var wrapValue = 90-unicodeDecimalArray[i];
-                updatedDecimalArray[i] = 65 + shift - wrapValue -1;
-            }
-            //For lowercase letter wrapping
-            else if (unicodeDecimalArray[i]+shift>122 && unicodeDecimalArray[i]<=122 && unicodeDecimalArray[i]>=97){
-                var wrapValue = 122-unicodeDecimalArray[i];
-                updatedDecimalArray[i] = 97 + shift - wrapValue -1;
-            }
-            //For capital and lowercase encryption without wrapping
-            else if ((unicodeDecimalArray[i]+shift<=90 && unicodeDecimalArray[i]>=65) || (unicodeDecimalArray[i]+shift<=122 && unicodeDecimalArray[i]>=97)){
-                updatedDecimalArray[i] = unicodeDecimalArray[i] + shift;
-            }
-            //For spaces & punctuation
-            else {
-                updatedDecimalArray[i] = unicodeDecimalArray[i];
+        //Encryption code for positive values of shifting (to the right)
+        if (shift>=0){
+            for (let i=0; i < unicodeDecimalArray.length; i++){
+                //For capital letter wrapping and encryption
+                if (unicodeDecimalArray[i]+shift>90 && unicodeDecimalArray[i]<=90 && unicodeDecimalArray[i]>=65){
+                    var wrapValue = 90-unicodeDecimalArray[i];
+                    updatedDecimalArray[i] = 65 + shift - wrapValue -1;
+                }
+                //Lowercase letter wrapping and encryption
+                else if (unicodeDecimalArray[i]+shift>122 && unicodeDecimalArray[i]<=122 && unicodeDecimalArray[i]>=97){
+                    var wrapValue = 122-unicodeDecimalArray[i];
+                    updatedDecimalArray[i] = 97 + shift - wrapValue -1;
+                }
+                //Capital and lowercase encryption without wrapping
+                else if ((unicodeDecimalArray[i]+shift<=90 && unicodeDecimalArray[i]>=65) || (unicodeDecimalArray[i]+shift<=122 && unicodeDecimalArray[i]>=97)){
+                    updatedDecimalArray[i] = unicodeDecimalArray[i] + shift;
+                }
+                //Keep all non-alphabet characters the same
+                else {
+                    updatedDecimalArray[i] = unicodeDecimalArray[i];
+                }
             }
         }
+        else if (shift<0){
+            for (let i=0; i < unicodeDecimalArray.length; i++)
+            {
+                //Capital letter wrapping in the opposite direction
+                if (unicodeDecimalArray[i]+shift<65 && unicodeDecimalArray[i]<=90 && unicodeDecimalArray[i]>=65){
+                    var wrapValue = unicodeDecimalArray[i]-65;
+                    updatedDecimalArray[i] = 90 + shift + wrapValue +1;
+                }
+                //Lowercase letter wrapping in the opposite direction
+                else if (unicodeDecimalArray[i]+shift<97 && unicodeDecimalArray[i]<=122 && unicodeDecimalArray[i]>=97){
+                    var wrapValue = unicodeDecimalArray[i]-97;
+                    updatedDecimalArray[i] = 122 + shift + wrapValue +1;
+                }
+                //Capital and lowercase encryption to the left without wrapping
+                else if ((unicodeDecimalArray[i]+shift>=65 && unicodeDecimalArray[i]<=90) || (unicodeDecimalArray[i]+shift>=97 && unicodeDecimalArray[i]<=122)){
+                    updatedDecimalArray[i] = unicodeDecimalArray[i] + shift;
+                }
+                //Keep all non-alphabet characters the same
+                else {
+                    updatedDecimalArray[i] = unicodeDecimalArray[i];
+                }
+            }
+        }
+        
         console.log("Encrypted Decimal Array:",updatedDecimalArray);
     }
 
+
+    //Converting the encrypted decimal values back into hex
     function newDecimalToHex(updatedDecimalArray){
         updatedHexArray = [];
         for (let i =0; i <updatedDecimalArray.length; i++){
@@ -62,12 +95,15 @@ function caesar(inString,shift){
     }
     
     
+    //Reforming and displaying the original string as an encrypted output
     function hex_to_string(updatedHexArray){
         outHex = updatedHexArray.join("");
         outString = unescape(outHex.replace(/\\/g, "%"));
-        console.log("String Output:",outString);
+        console.log("Output:",outString);
     }
 
+
+    //Calling the subfunctions to run
     toUnicodeHex(inString);
     hexToDecimal(unicodeHexArray);
     decimalShift(unicodeDecimalArray);
@@ -76,4 +112,5 @@ function caesar(inString,shift){
 }
 
 
-caesar('ABCD efgh', 1)
+//Calling the Caesar Cipher with 'input' and 'shift' values
+caesar('This is the Caesar Cipher', 2)
