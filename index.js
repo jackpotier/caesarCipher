@@ -113,4 +113,4 @@ function caesar(inString,shift){
 
 
 //Calling the Caesar Cipher with 'input' and 'shift' values
-caesar('This is the Caesar Cipher', 2)
+caesar('This is the Caesar Cipher', -2)
